@@ -6,8 +6,16 @@
     tools:context=".MainActivity">
 
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Aceptar"
+        />
+
     <WebView
         android:id="@+id/webView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+        android:layout_width="300px"
+        android:layout_height="600px" />
 </LinearLayout>

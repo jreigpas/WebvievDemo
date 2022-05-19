@@ -4,17 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     WebView web;
+    Button myButton;
+    private static final String TAG = "MyActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +31,26 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);;
         web.setWebViewClient(new Callback());
         web.loadUrl("https://jreigpas.github.io/myapp/");
-        //web.loadUrl("https://www.elmundo.es/");
-
-        //String data = "<html><body><h1>Hello, Javatpoint!</h1></body></html>";
-        //web.loadData(data, "text/html", "UTF-8");
 
         webSettings.setDomStorageEnabled(true);
         web.addJavascriptInterface(new JavaScriptInterface(this), "Android");
+
+        Log.i(TAG, "Pasa por aqui 1");
+
+        myButton = (Button)findViewById(R.id.button1);
+
+        myButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "este es un ejemplo", Toast.LENGTH_SHORT).show();
+                web.evaluateJavascript(
+                        "changeText(\"" + "INFORMACION DESDE ANDROID" + "\")",
+                        null);
+
+                Log.i(TAG, "Pasa por aqui 2");
+
+            }
+        });
 
     }
 
@@ -54,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, texto, duration);
+            Log.i(TAG, "Informacion que nos llega de React " + texto);
             toast.show();
 
             return "";
