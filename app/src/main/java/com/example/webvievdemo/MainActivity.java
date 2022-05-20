@@ -4,22 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     WebView web;
     Button myButton;
+    EditText myEditText;
+
     private static final String TAG = "MyActivity";
 
     @Override
@@ -38,13 +41,17 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "Pasa por aqui 1");
 
         myButton = (Button)findViewById(R.id.button1);
+        myEditText = (EditText)findViewById(R.id.editTextTextPersonName);
+
 
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Editable textInput = myEditText.getText();
                 Toast.makeText(MainActivity.this, "este es un ejemplo", Toast.LENGTH_SHORT).show();
                 web.evaluateJavascript(
-                        "changeText(\"" + "INFORMACION DESDE ANDROID" + "\")",
+                        "changeText(\"" + textInput + "\")",
                         null);
 
                 Log.i(TAG, "Pasa por aqui 2");
@@ -53,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
     private class Callback extends WebViewClient {
         @Override
         public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event) {
@@ -63,18 +69,20 @@ public class MainActivity extends AppCompatActivity {
 
     public class JavaScriptInterface {
         Context mContext;
+        TextView myTextView;
         JavaScriptInterface(Context c) {
             mContext = c;
         }
         @JavascriptInterface
         public String getFromAndroid(String texto) {
-
             Context context = getApplicationContext();
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, texto, duration);
             Log.i(TAG, "Informacion que nos llega de React " + texto);
             toast.show();
+            myTextView = (TextView) findViewById(R.id.textView);
+            myTextView.setText(texto);
 
             return "";
         }
