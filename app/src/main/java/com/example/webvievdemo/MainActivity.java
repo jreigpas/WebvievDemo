@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         web.loadUrl("https://jreigpas.github.io/myapp/");
 
         webSettings.setDomStorageEnabled(true);
-        web.addJavascriptInterface(new JavaScriptInterface(this), "Android");
+        web.addJavascriptInterface(new JavaScriptInterface(this), "Native");
 
         Log.i(TAG, "Pasa por aqui 1");
 
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 Editable textInput = myEditText.getText();
                 Toast.makeText(MainActivity.this, "este es un ejemplo", Toast.LENGTH_SHORT).show();
                 web.evaluateJavascript(
-                        "changeText(\"" + textInput + "\")",
+                        "getFromNative(\"" + textInput + "\")",
                         null);
 
                 Log.i(TAG, "Pasa por aqui 2");
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             mContext = c;
         }
         @JavascriptInterface
-        public String getFromAndroid(String texto) {
+        public String getFromReact(String texto) {
             Context context = getApplicationContext();
             int duration = Toast.LENGTH_SHORT;
 
